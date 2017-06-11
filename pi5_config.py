@@ -105,9 +105,13 @@ class compteurlayout(GridLayout):
         self.add_widget(Label(text='Potenza istantanea',font_size='25sp')) #,on_ref_press=self.cyclic))
         self.puissance = Label(text=' ',font_size='25sp')
         self.add_widget(self.puissance)
-        self.add_widget(Label(text='Energia autoconsumata', font_size='25sp'))
-        self.energy = Label(text=' ',font_size='25sp')
-        self.add_widget(self.energy)
+        # self.add_widget(Label(text='Energia autoconsumata', font_size='25sp'))
+        # self.energy = Label(text=' ',font_size='25sp')
+        # self.add_widget(self.energy)
+        self.add_widget(Label(text='Carica batteria', font_size='25sp'))
+        self.battery = Label(text=' ',font_size='25sp')
+        self.add_widget(self.battery)
+        
         self.add_widget(Label(text='Euro risparmiati', font_size='25sp'))
         self.euros = Label(text=' ',font_size='25sp')
         self.add_widget(self.euros)
@@ -135,8 +139,9 @@ class compteurlayout(GridLayout):
         self.puissance.text = str(Pinst)+" W"
 #	if Pinst > 0:
 #		energie += Pinst
-#	print(energie/3600000.0)	
-	self.energy.text = str(round(energie/1,3))+" kWh"
+#	print(energie/3600000.0)
+        self.battery.text=str(state_of_charge)
+    # self.energy.text = str(round(energie/1,3))+" kWh"
 	self.euros.text = str(round(energie/1*0.18,3))+" eur"
     
 	if (connect_to_db ==False):
@@ -147,10 +152,11 @@ class compteurlayout(GridLayout):
     
     
 	if (conn_status == False):
-	    self.energy.text = "N/A"
+        # self.energy.text = "N/A"
 	    self.puissance.text = "N/A"
 	    self.euros.text = "N/A"
 	    self.ccgx.text = 'Conn. CCGX: [color=FF0000]No[/color]'
+            self.battery.text= "N/A"
         
         # self.euros_year.text = "N/A"
 	else:
