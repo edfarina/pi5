@@ -43,7 +43,7 @@ seconds   = 0
 table = "";
 
 global table
-File = open("table.txt","r")
+File = open("/home/pi/Documents/Nuvola/table.txt","r")
 lines = File.readlines()
 table = lines[0]
 File.close()
@@ -171,7 +171,7 @@ class compteurlayout(GridLayout):
             if (self.dateDiffInSeconds(datetime.datetime.now(),finish_time) <2):
                 client = ModbusClient('192.169.1.107', port=502)
                 if (client.connect()):
-                    client.write_register(2702, 80, unit=246)
+                    client.write_register(2702, 80, unit=100)
                     block_recharge==False
                     self.statblock.text = "blocco scarica: Disattivato"
             else:
@@ -206,7 +206,7 @@ class compteurlayout(GridLayout):
         try:
             if (block_recharge==True):
                 if (client.connect()):
-                    client.write_register(2702, 80, unit=246)
+                    client.write_register(2702, 80, unit=100)
                     block_recharge==False
                     self.statblock.text = "blocco scarica: Disattivato"
                 else:
@@ -214,7 +214,7 @@ class compteurlayout(GridLayout):
 
             else:
                 if (client.connect()):
-                    client.write_register(2702, 10, unit=246)
+                    client.write_register(2702, 10, unit=100)
                     block_recharge==True
                     self.statblock.text = "24:00:00"
                     finish_time = datetime.datetime.now() + datetime.timedelta(hours=12)
