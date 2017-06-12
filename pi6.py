@@ -172,7 +172,7 @@ class compteurlayout(GridLayout):
                 client = ModbusClient('192.169.1.107', port=502)
                 if (client.connect()):
                     client.write_register(2702, 80, unit=100)
-                    block_recharge==False
+                    block_recharge=False
                     self.statblock.text = "blocco scarica: Disattivato"
             else:
                 self.statblock.text = "Scarica disabilitata: " + str(self.daysHoursMinutesSecondsFromSeconds(self.dateDiffInSeconds(datetime.datetime.now(),finish_time) ))
@@ -207,7 +207,7 @@ class compteurlayout(GridLayout):
             if (block_recharge==True):
                 if (client.connect()):
                     client.write_register(2702, 80, unit=100)
-                    block_recharge==False
+                    block_recharge=False
                     self.statblock.text = "blocco scarica: Disattivato"
                 else:
                     self.statblock.text = "blocco scarica: Servizio non disponibile"
@@ -215,7 +215,7 @@ class compteurlayout(GridLayout):
             else:
                 if (client.connect()):
                     client.write_register(2702, 10, unit=100)
-                    block_recharge==True
+                    block_recharge=True
                     self.statblock.text = "24:00:00"
                     finish_time = datetime.datetime.now() + datetime.timedelta(hours=12)
                     self.statblock.text = "Scarica disabilitata: " + str(self.daysHoursMinutesSecondsFromSeconds(self.dateDiffInSeconds(datetime.datetime.now(),finish_time) ))
@@ -224,7 +224,7 @@ class compteurlayout(GridLayout):
 
         except Exception:
             print "error"
-            block_recharge==False
+            block_recharge=False
             self.statblock.text = "blocco scarica: Servizio non disponibile"
         client.close()
     
