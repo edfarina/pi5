@@ -28,7 +28,7 @@ try:
                      user="sql11172989",         # your username
                      passwd="gxPNMb9mdQ",  # your password
                      db="sql11172989",
-                     connect_timeout = 1) 
+                     connect_timeout = 0.5) 
 
 except Exception:
     db = None
@@ -449,7 +449,7 @@ class MyApp(App):
                                  user="sql11172989",         # your username
                                  passwd="gxPNMb9mdQ",  # your password
                                  db="sql11172989",
-                                 connect_timeout = 1)
+                                 connect_timeout = 0.1)
                 cur = db.cursor()
 
                 cur.execute('INSERT INTO sql11172989.'+ table+ ' ' + 
