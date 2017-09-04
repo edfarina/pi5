@@ -17,7 +17,8 @@ from subprocess import call
 import MySQLdb
 import time
 import datetime
-
+import webbrowser
+new = 2
 # from datetime import datetime, time, timedelta
 
 
@@ -132,6 +133,8 @@ class compteurlayout(GridLayout):
         # self.statblock = Label(text='Disattivato',font_size='15sp', height=70)
         self.statblock = Button(text='Abilita/Disabilita blocco scarica',on_press=self.mdp_enable,size_hint_y=None, height=70, font_size='15sp')
         self.add_widget(self.statblock)
+        self.statblock = Button(text='Controlla CCGX',on_press=self.mdp_ccgx,size_hint_y=None, height=70, font_size='15sp')
+        self.add_widget(self.statblock)
         
 	Clock.schedule_interval(self.cyclic_compteur, 1.5)
 
@@ -199,9 +202,14 @@ class compteurlayout(GridLayout):
     	days, hours = divmod(hours, 24)
     	return (hours, minutes, seconds)
         
+    def mdp_ccgx(self,*args):
+        url = "http://192.169.1.107"
+        webbrowser.open(url,new=new)
+        
     def mdp_enable(self,*args):
         global block_recharge, finish_time
         client = ModbusClient('192.169.1.107', port=502)
+
         # self.statblock.text = "24:00:00"
 
         # print block_recharge
@@ -382,9 +390,9 @@ class MyApp(App):
                         
                         battery_acvc = client.read_holding_registers(26,2,unit=246)
                         
-                        battery_voltage = battery_acvc.getRegister(0)
+                        battery_voltage = float(battery_acvc.getRegister(0)/2400)
                         
-                        battery_current = battery_acvc.getRegister(1)
+                        battery_current = battery_acvc.getRegister(1)/10
                         
                         
                         print grid_power
@@ -446,6 +454,25 @@ class MyApp(App):
         
                 ts = time.time()
                 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                
+                
+                
+                dblocal = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                                 user="root",         # your username
+                                 passwd="root",  # your password
+                                 db="NuvolaDB",
+                                 connect_timeout = 3)
+                                 
+                curlocal = dblocal.cursor()
+
+                curlocal.execute('INSERT INTO NuvolaDB.Nuvola ' + 
+                '(Seconds, Energy, Pinst, StateOfCharge, ConnStatus, GridPower1, GridPower2, GridPower3, State, BatteryAlarm, BatteryVoltage, BatteryCurrent, ConnCCGX, Date_) '
+                'VALUES (' + str(seconds) + " , " + str(energie) + " , " + str(Pinst) + " , " + str(state_of_charge) + " , " + str(conn_status) + " , " + str(grid_power[0]) + " , " + str(grid_power[1]) + " , " + str(grid_power[2]) + " , " + str(state)   + " , " + str(battery_alarm) + " , " + str(battery_voltage) + " , " + str(battery_current) + " , " + str(conn_to_ccgx)  + ' , "' + str(timestamp) + '")'               )
+                print ("sto scrivendo....")
+                curlocal.close()
+                dblocal.commit()
+                
+                
                 db = MySQLdb.connect(host="nuvolino.mysql.database.azure.com",    # your host, usually localhost
                                  user="nuvolino@nuvolino",         # your username
                                  passwd="RossiniEnergy123",  # your password
