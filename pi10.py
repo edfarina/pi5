@@ -92,13 +92,13 @@ class compteurlayout(GridLayout):
     def __init__(self, **kwargs):
         
         super(compteurlayout, self).__init__(**kwargs)
-        global conn_status, state_of_charge, grid_power, state, battery_alarm, battery_current, battery_voltage, connect_to_db, block_recharge, finish_time, temperature_battery
+        global conn_status, state_of_charge, grid_power, state, battery_alarm, battery_current, battery_voltage, connect_to_db, block_recharge, finish_time, alarm_battery_temp
 
         state_of_charge = 0
         state = 0
         battery_alarm = 0
         battery_current = 0
-        temperature_battery = 0
+        alarm_battery_temp = 0
 
         battery_voltage = 0
         connect_to_db = False
@@ -123,9 +123,9 @@ class compteurlayout(GridLayout):
         self.add_widget(Label(text='Euro risparmiati dopo un anno', font_size='25sp'))
         self.euros_year = Label(text=' ',font_size='25sp')
         self.add_widget(self.euros_year)
-        self.add_widget(Label(text='Temperatura Batteria', font_size='25sp'))
-        self.temp_batt = Label(text=' ',font_size='25sp')
-        self.add_widget(self.temp_batt)
+        # self.add_widget(Label(text='Temperatura Batteria', font_size='25sp'))
+        # self.temp_batt = Label(text=' ',font_size='25sp')
+        # self.add_widget(self.temp_batt)
         self.ccgx = Label(text='[color=ff3333]Hello[/color][color=3333ff]World[/color]',font_size='15sp', markup = True)
         self.add_widget(self.ccgx)    
         self.db = Label(text='DB: NO',font_size='15sp', markup = True)
@@ -153,7 +153,7 @@ class compteurlayout(GridLayout):
         self.battery.text=str(state_of_charge)
     # self.energy.text = str(round(energie/1,3))+" kWh"
 	self.euros.text = str(round(energie/1*0.18,3))+" eur"
-        self.temp_batt = str(temperature_battery)
+        # self.temp_batt = str(alarm_battery_temp)
 	if (connect_to_db ==False):
 	    self.db.text = 'Conn. DB: [color=FF0000]No[/color]'
 	else:
@@ -343,7 +343,7 @@ class MyApp(App):
         return my_screenmanager
 
     def cyclic(self,dt):
-        global energie,Pinst, conn_to_ccgx, seconds, conn_status, time_check, state_of_charge, grid_power, state, battery_alarm, battery_voltage, battery_current, connect_to_db, temperature_battery
+        global energie,Pinst, conn_to_ccgx, seconds, conn_status, time_check, state_of_charge, grid_power, state, battery_alarm, battery_voltage, battery_current, connect_to_db, alarm_battery_temp
         client = ModbusClient('192.169.1.107', port=502)
         if (conn_status or (conn_status==False and time_check > 10)):
             try:
@@ -399,9 +399,9 @@ class MyApp(App):
                         
                         battery_current = battery_acvc.getRegister(1)/10
                         
-                        temp_battery_in = client.read_holding_registers(773,1,unit=246)
+                        temp_battery_in = client.read_holding_registers(34,1,unit=246)
                         
-                        temperature_battery = temp_battery_in.getRegister(0)
+                        alarm_battery_temp = temp_battery_in.getRegister(0)
                         
                         
                         print grid_power
@@ -497,8 +497,8 @@ class MyApp(App):
                                  connect_timeout = 3) 
                 cur = db.cursor()
                 cur.execute('INSERT INTO sql11172989.'+ table+ ' ' + 
-                '(Seconds, Energy, Pinst, StateOfCharge, ConnStatus, GridPower1, GridPower2, GridPower3, State, BatteryAlarm, BatteryVoltage, BatteryCurrent, ConnCCGX, Date_) '
-                'VALUES (' + str(seconds) + " , " + str(energie) + " , " + str(Pinst) + " , " + str(state_of_charge) + " , " + str(conn_status) + " , " + str(grid_power[0]) + " , " + str(grid_power[1]) + " , " + str(grid_power[2]) + " , " + str(state)   + " , " + str(battery_alarm) + " , " + str(battery_voltage) + " , " + str(battery_current) + " , " + str(conn_to_ccgx)  + ' , "' + str(timestamp) + '")'               )
+                '(Seconds, Energy, Pinst, StateOfCharge, ConnStatus, GridPower1, GridPower2, GridPower3, State, BatteryAlarm, BatteryVoltage, BatteryCurrent, ConnCCGX, Date_, AlarmBatteryTemp) '
+                'VALUES (' + str(seconds) + " , " + str(energie) + " , " + str(Pinst) + " , " + str(state_of_charge) + " , " + str(conn_status) + " , " + str(grid_power[0]) + " , " + str(grid_power[1]) + " , " + str(grid_power[2]) + " , " + str(state)   + " , " + str(battery_alarm) + " , " + str(battery_voltage) + " , " + str(battery_current) + " , " + str(conn_to_ccgx)  + ' , "' + str(timestamp) + ' , "' + str(alarm_battery_temp) '")'               )
                 print ("sto scrivendo....")
 
                 cur.close()
