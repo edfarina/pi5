@@ -497,8 +497,8 @@ class MyApp(App):
                                  connect_timeout = 3) 
                 cur = db.cursor()
                 cur.execute('INSERT INTO sql11172989.'+ table+ ' ' + 
-                '(Seconds, Energy, Pinst, StateOfCharge, ConnStatus, GridPower1, GridPower2, GridPower3, State, BatteryAlarm, BatteryVoltage, BatteryCurrent, ConnCCGX, Date_, AlarmBatteryTemp) '
-                'VALUES (' + str(seconds) + " , " + str(energie) + " , " + str(Pinst) + " , " + str(state_of_charge) + " , " + str(conn_status) + " , " + str(grid_power[0]) + " , " + str(grid_power[1]) + " , " + str(grid_power[2]) + " , " + str(state)   + " , " + str(battery_alarm) + " , " + str(battery_voltage) + " , " + str(battery_current) + " , " + str(conn_to_ccgx)  + ' , "' + str(timestamp) + ' , "' + str(alarm_battery_temp) '")'               )
+                '(Seconds, Energy, Pinst, StateOfCharge, ConnStatus, GridPower1, GridPower2, GridPower3, State, BatteryAlarm, BatteryVoltage, BatteryCurrent, ConnCCGX, AlarmBatteryTemp, Date_ ) '
+                'VALUES (' + str(seconds) + " , " + str(energie) + " , " + str(Pinst) + " , " + str(state_of_charge) + " , " + str(conn_status) + " , " + str(grid_power[0]) + " , " + str(grid_power[1]) + " , " + str(grid_power[2]) + " , " + str(state)   + " , " + str(battery_alarm) + " , " + str(battery_voltage) + " , " + str(battery_current) + " , " + str(conn_to_ccgx) + " , " + str(alarm_batter_temp)  + ' , "' + str(timestamp) + '")'               )
                 print ("sto scrivendo....")
 
                 cur.close()
