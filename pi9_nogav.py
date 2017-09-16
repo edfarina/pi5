@@ -468,8 +468,8 @@ class MyApp(App):
                 curlocal = dblocal.cursor()
 
                 curlocal.execute('INSERT INTO NuvolaDB.Nuvola ' + 
-                '(Seconds, Energy, Pinst, StateOfCharge, ConnStatus, GridPower1, GridPower2, GridPower3, State, BatteryAlarm, BatteryVoltage, BatteryCurrent, ConnCCGX, Date_) '
-                'VALUES (' + str(seconds) + " , " + str(energie) + " , " + str(Pinst) + " , " + str(state_of_charge) + " , " + str(conn_status) + " , " + str(grid_power[0]) + " , " + str(grid_power[1]) + " , " + str(grid_power[2]) + " , " + str(state)   + " , " + str(battery_alarm) + " , " + str(battery_voltage) + " , " + str(battery_current) + " , " + str(conn_to_ccgx)  + ' , "' + str(timestamp) + '")'               )
+                '(Seconds, Energy, Pinst, StateOfCharge, ConnStatus, GridPower1, GridPower2, GridPower3, State, BatteryVoltage, BatteryCurrent, ConnCCGX, Date_) '
+                'VALUES (' + str(seconds) + " , " + str(energie) + " , " + str(Pinst) + " , " + str(state_of_charge) + " , " + str(conn_status) + " , " + str(grid_power[0]) + " , " + str(grid_power[1]) + " , " + str(grid_power[2]) + " , " + str(state)   + "  , " + str(battery_voltage) + " , " + str(battery_current) + " , " + str(conn_to_ccgx)  + ' , "' + str(timestamp) + '")'               )
                 print ("sto scrivendo....")
                 curlocal.close()
                 dblocal.commit()
