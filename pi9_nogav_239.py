@@ -366,11 +366,11 @@ class MyApp(App):
                         else:
                             Pinst += rr.getRegister(2)
 
-                        soc = client.read_holding_registers(30, 2, unit=246) 
+                        soc = client.read_holding_registers(30, 2, unit=239) 
                         state_of_charge = soc.getRegister(0)/10
                         state = soc.getRegister(1)
 
-                        battery_alarm_buffer = client.read_holding_registers(35, 1, unit=246) 
+                        battery_alarm_buffer = client.read_holding_registers(35, 1, unit=239) 
                         battery_alarm = battery_alarm_buffer.getRegister(0)
 
 
@@ -389,7 +389,7 @@ class MyApp(App):
                         # else:
                         #     grid_power[2] = grid_ac.getRegister(2)
                         #
-                        battery_acvc = client.read_holding_registers(26,2,unit=246)
+                        battery_acvc = client.read_holding_registers(26,2,unit=239)
                         
                         battery_voltage = float(battery_acvc.getRegister(0)/2400)
                         
@@ -409,7 +409,8 @@ class MyApp(App):
                 
                         print grid_power
                     
-                    except Exception:
+                    except Exception as e:
+                        print e
                         print "error"
                         Pinst = 0
                         conn_status = False
